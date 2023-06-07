@@ -24,7 +24,7 @@ pipeline {
       }
     }
 
-    stage('Terraform Apply') {
+    stage('Terraform Appply') {
       steps {
         withCredentials([azureServicePrincipal('393e3de3-0900-4b72-8f1b-fb3b1d6b97f1')]) {
           sh 'terraform apply -auto-approve'
