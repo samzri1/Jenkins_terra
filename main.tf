@@ -1,49 +1,51 @@
-provider "azurerm" {
-  features {}
-}
-
-resource "azurerm_resource_group" {
-  name     = "resource-group-terra"
+resource "azurerm_resource_group" "example" {
+  name     = "example-resource-group"
   location = "West Europe"
 }
 
-resource "azurerm_virtual_network" {
-  name                = "terrasam-vnet"
+resource "azurerm_virtual_network" "example" {
+  name                = "example-virtual-network"
   address_space       = ["10.0.0.0/16"]
-  location            = azurerm_resource_group.location
-  resource_group_name = azurerm_resource_group.name
+  location            = azurerm_resource_group.example.location
+  resource_group_name = azurerm_resource_group.example.name
 }
 
-resource "azurerm_subnet"{
-  name                 = "azure-subnet"
-  resource_group_name  = azurerm_resource_group.name
-  virtual_network_name = azurerm_resource_group.name
+resource "azurerm_subnet" "example" {
+  name                 = "example-subnet"
+  resource_group_name  = azurerm_resource_group.example.name
+  virtual_network_name = azurerm_virtual_network.example.name
   address_prefixes     = ["10.0.1.0/24"]
 }
 
-resource "azurerm_network_interface"{
-  name                = "azureterra-nic"
-  location            = azurerm_resource_group.location
-  resource_group_name = azurerm_resource_group.name
+resource "azurerm_network_interface" "example" {
+  name                = "example-network-interface"
+  location            = azurerm_resource_group.example.location
+  resource_group_name = azurerm_resource_group.example.name
 
   ip_configuration {
-    name                          = "terrasam-config"
-    subnet_id                     = azurerm_subnet.id
+    name                          = "example-ip-configuration"
+    subnet_id                     = azurerm_subnet.example.id
     private_ip_address_allocation = "Dynamic"
   }
 }
 
-resource "azurerm_linux_virtual_machine" {
-  name                = "terra-vm"
-  location            = azurerm_resource_group.location
-  resource_group_name = azurerm_resource_group.name
-  size                = "Standard_B1s"
+resource "azurerm_linux_virtual_machine" "example" {
+  name                = "example-vm"
+  location            = azurerm_resource_group.example.location
+  resource_group_name = azurerm_resource_group.example.name
+  size                = "Standard_DS1_v2"
 
-  network_interface_ids = [azurerm_network_interface.id]
+  network_interface_ids = [azurerm_network_interface.example.id]
+
+  admin_username = "adminuser"
+
+  admin_ssh_key {
+    username       = "adminuser"
+    public_key     = file("~/.ssh/id_rsa.pub")
+  }
 
   os_disk {
-    name              = "terraform-osdisk"
-    caching           = "ReadWrite"
+    caching              = "ReadWrite"
     storage_account_type = "Standard_LRS"
   }
 
@@ -54,10 +56,6 @@ resource "azurerm_linux_virtual_machine" {
     version   = "latest"
   }
 
-  admin_username = "adminuser"
-
-  admin_ssh_key {
-    username       = "adminuser"
-    public_key     = file("~/.ssh/id_rsa.pub")
-  }
+  computer_name  = "example-vm"
+  admin_password = "password123"
 }
