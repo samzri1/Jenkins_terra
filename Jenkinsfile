@@ -10,7 +10,7 @@ pipeline {
 
     stage('Terraform Init') {
       steps {
-        withCredentials([azureServicePrincipal('7349d3b2-951f-41be-877e-d8ccd9f3e73c')]) {
+        withCredentials([azureServicePrincipal('azure')]) {
           sh 'terraform init'
         }
       }
@@ -18,7 +18,7 @@ pipeline {
 
     stage('Terraform Plan') {
       steps {
-        withCredentials([azureServicePrincipal('7349d3b2-951f-41be-877e-d8ccd9f3e73c')]) {
+        withCredentials([azureServicePrincipal('azure')]) {
           sh 'terraform plan'
         }
       }
@@ -26,7 +26,7 @@ pipeline {
 
     stage('Terraform Appply') {
       steps {
-        withCredentials([azureServicePrincipal('7349d3b2-951f-41be-877e-d8ccd9f3e73c')]) {
+        withCredentials([azureServicePrincipal('azure')]) {
           sh 'terraform apply -auto-approve'
         }
       }
