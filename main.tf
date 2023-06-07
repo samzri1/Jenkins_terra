@@ -1,4 +1,4 @@
-  # Provider Configuration
+# Provider Configuration
 provider "azurerm" {
   features {}
 }
@@ -23,12 +23,6 @@ resource "azurerm_subnet" "example" {
   resource_group_name  = azurerm_resource_group.example.name
   virtual_network_name = azurerm_virtual_network.example.name
   address_prefixes     = ["10.0.1.0/24"]
-}
-
-# Public Key
-resource "azurerm_public_key" "example" {
-  name       = "example-public-key"
-  public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDY8sIrQZ/w5Q4N4W0ed8lqEg5B+p+4tkDM7bdg1MwvWmfnrArKAGWKnw+oxJon008YXGq/7fynatuQ52RyZUUnGC9rk5IIL6/+Cld75ex17P01wPAf73baI4/ZiqXXh36dMqlDsacPgrBJOZJ6ml1FAkFOi1mmVVgpENJjOzH27eyQNdRw/0OY5H98b12vdVqBqIN+shc5aIeAvMgPIHHo7S+UfQtSdOrfQ8xcTzbNLnRUJjB7T3r/I34b7eKfcQSiwbf/UaBa7YhQX67I+0oFDID5E7MJQcnuo1Ji1hqWiKOkhi3evXiOwEWIxOf/5XQ7auQr0FQ83wkHKH4K75i0C9kxZRw+bZ3pzL0fmKGQ5P2ii88+6izMTD/GK+xEn+ydGBtMEqMmQSbBQH+HOiJA44YU8MPtv3mHTK6ocqb1pmf5k/JDKpU+xPLeZUrqOV2sH/1yoCdT+TltTTWPdlj5LF3T0upi301ryy0yPVjfc7XE9Frg3Oxo8y+LW5GXl/sPmPUVR7ffU5ByZz8ruUElPyTt1F7Q439T8p1C6dky7T8llebS8ACsSUrA/0V112OEhhkC9NcwJHo7d8TgM6f0Zus3eYJ9A5/Hz58CX4/0IJw5rVxJbUC7OBQql5SbLo8qZ3Of4jtJKJ9Lp1wxZXd8GaonbCeE1tjhiqrjKvwGPw== azureuser@myVM"
 }
 
 # Network Interface
@@ -60,21 +54,26 @@ resource "azurerm_linux_virtual_machine" "example" {
     storage_account_type = "Standard_LRS"
   }
 
+  os_profile {
+    computer_name  = "example-vm"
+    admin_username = "adminuser"
+    admin_password = "Password1234!"
+  }
+
+  # SSH Public Key
+  os_profile_linux_config {
+    disable_password_authentication = true
+
+    ssh_keys {
+      path     = "/home/adminuser/.ssh/authorized_keys"
+      key_data = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDY8sIrQZ/w5Q4N4W0ed8lqEg5B+p+4tkDM7bdg1MwvWmfnrArKAGWKnw+oxJon008YXGq/7fynatuQ52RyZUUnGC9rk5IIL6/+Cld75ex17P01wPAf73baI4/ZiqXXh36dMqlDsacPgrBJOZJ6ml1FAkFOi1mmVVgpENJjOzH27eyQNdRw/0OY5H98b12vdVqBqIN+shc5aIeAvMgPIHHo7S+UfQtSdOrfQ8xcTzbNLnRUJjB7T3r/I34b7eKfcQSiwbf/UaBa7YhQX67I+0oFDID5E7MJQcnuo1Ji1hqWiKOkhi3evXiOwEWIxOf/5XQ7auQr0FQ83wkHKH4K75i0C9kxZRw+bZ3pzL0fmKGQ5P2ii88+6izMTD/GK+xEn+ydGBtMEqMmQSbBQH+HOiJA44YU8MPtv3mHTK6ocqb1pmf5k/JDKpU+xPLeZUrqOV2sH/1yoCdT+TltTTWPdlj5LF3T0upi301ryy0yPVjfc7XE9Frg3Oxo8y+LW5GXl/sPmPUVR7ffU5ByZz8ruUElPyTt1F7Q439T8p1C6dky7T8llebS8ACsSUrA/0V112OEhhkC9NcwJHo7d8TgM6f0Zus3eYJ9A5/Hz58CX4/0IJw5rVxJbUC7OBQql5SbLo8qZ3Of4jtJKJ9Lp1wxZXd8GaonbCeE1tjhiqrjKvwGPw== azureuser@myVM"
+    }
+  }
+
   source_image_reference {
     publisher = "Canonical"
     offer     = "UbuntuServer"
     sku       = "18.04-LTS"
     version   = "latest"
-  }
-
-  os_profile {
-    computer_name  = "example-vm"
-    admin_username = "adminuser"
-    admin_password = "Password1234!"
-
-    ssh_public_keys {
-      path     = "/home/adminuser/.ssh/authorized_keys"
-      key_data = azurerm_public_key.example.public_key
-    }
   }
 }
