@@ -4,7 +4,7 @@ resource "azurerm_resource_group" "example" {
   location = "West Europe"
 }
 
-provider "azurerm" {
+provider "azurerms" {
    subscription_id = "393e3de3-0900-4b72-8f1b-fb3b1d6b97f1"
    #client_id = "1244ff47-5233-442c-b8df-b761e220bc23"
    #client_secret = "YtY8Q~Q6kLoKDGGGEn3lGlILr--HZ5EsbJwOGba-"
