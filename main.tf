@@ -9,33 +9,33 @@ terraform {
 
 provider "azurerm" {
    subscription_id = "393e3de3-0900-4b72-8f1b-fb3b1d6b97f1"
-   client_id = "b348740f-1307-414f-97bb-3ad525451347"
-   client_secret = "FRR8Q~YcZSWLDtdM63Ou4fgMIziOx5GCiubeMbMu"
+   #client_id = "1244ff47-5233-442c-b8df-b761e220bc23"
+   #client_secret = "YtY8Q~Q6kLoKDGGGEn3lGlILr--HZ5EsbJwOGba-"
    tenant_id = "7349d3b2-951f-41be-877e-d8ccd9f3e73c"
    skip_provider_registration = true
    features {}
 }
 
-resource "azurerm_resource_group" "rsgrp" {
-  name     = "testjenkinsTerra"
+resource "azurerm_resource_group" "jktfrg" {
+  name     = "test-terra"
   location = "West Europe"
 }
 
-resource "azurerm_virtual_network" "avn" {
+resource "azurerm_virtual_network" "jktfvm" {
   name                = "jknetwork"
   address_space       = ["10.0.0.0/16"]
   location            = azurerm_resource_group.jktfrg.location
   resource_group_name = azurerm_resource_group.jktfrg.name
 }
 
-resource "azurerm_subnet" "azsubnet" {
+resource "azurerm_subnet" "jktfsub" {
   name                 = "internal"
   resource_group_name  = azurerm_resource_group.jktfrg.name
   virtual_network_name = azurerm_virtual_network.jktfvm.name
   address_prefixes     = ["10.0.2.0/24"]
 }
 
-resource "azurerm_network_interface" "azni" {
+resource "azurerm_network_interface" "jktfnic" {
   name                = "example-nic"
   location            = azurerm_resource_group.jktfrg.location
   resource_group_name = azurerm_resource_group.jktfrg.name
@@ -47,7 +47,7 @@ resource "azurerm_network_interface" "azni" {
   }
 }
 
-resource "azurerm_linux_virtual_machine" "azvm" {
+resource "azurerm_linux_virtual_machine" "jktfvm" {
   name                = "Vmjktf"
   resource_group_name = azurerm_resource_group.jktfrg.name
   location            = azurerm_resource_group.jktfrg.location
