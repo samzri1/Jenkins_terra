@@ -16,26 +16,26 @@ provider "azurerm" {
    features {}
 }
 
-resource "azurerm_resource_group" "jktfrg" {
-  name     = "TerraxJenkTom1"
+resource "azurerm_resource_group" "rsgrp" {
+  name     = "testjenkinsTerra"
   location = "West Europe"
 }
 
-resource "azurerm_virtual_network" "jktfvm" {
+resource "azurerm_virtual_network" "avn" {
   name                = "jknetwork"
   address_space       = ["10.0.0.0/16"]
   location            = azurerm_resource_group.jktfrg.location
   resource_group_name = azurerm_resource_group.jktfrg.name
 }
 
-resource "azurerm_subnet" "jktfsub" {
+resource "azurerm_subnet" "azsubnet" {
   name                 = "internal"
   resource_group_name  = azurerm_resource_group.jktfrg.name
   virtual_network_name = azurerm_virtual_network.jktfvm.name
   address_prefixes     = ["10.0.2.0/24"]
 }
 
-resource "azurerm_network_interface" "jktfnic" {
+resource "azurerm_network_interface" "azni" {
   name                = "example-nic"
   location            = azurerm_resource_group.jktfrg.location
   resource_group_name = azurerm_resource_group.jktfrg.name
@@ -47,7 +47,7 @@ resource "azurerm_network_interface" "jktfnic" {
   }
 }
 
-resource "azurerm_linux_virtual_machine" "jktfvm" {
+resource "azurerm_linux_virtual_machine" "azvm" {
   name                = "Vmjktf"
   resource_group_name = azurerm_resource_group.jktfrg.name
   location            = azurerm_resource_group.jktfrg.location
