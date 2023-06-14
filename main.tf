@@ -52,8 +52,8 @@ resource "azurerm_linux_virtual_machine" "jktfvm" {
   resource_group_name = azurerm_resource_group.jktfrg.name
   location            = azurerm_resource_group.jktfrg.location
   size                = "Standard_DS1_v2"
-  admin_username      = "adminuser"
-  admin_password      = "@Azurev69007"
+  admin_username      = "sam"
+  admin_password      = "H1T8POVN21D4EE7Y$"
   disable_password_authentication = "false"
   network_interface_ids = [
     azurerm_network_interface.jktfnic.id,
