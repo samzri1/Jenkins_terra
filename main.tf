@@ -65,9 +65,9 @@ resource "azurerm_linux_virtual_machine" "jktfvm" {
   }
 
   source_image_reference {
-    publisher = "Canonical"
-    offer     = "0001-com-ubuntu-server-jammy"
-    sku       = "22_04-lts-gen2"
+    publisher = "readymind"
+    offer     = "ubuntults20_docker"
+    sku       = "docker_ubuntu20lts1"
     version   = "latest"
   }
 }
