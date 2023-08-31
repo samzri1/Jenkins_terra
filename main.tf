@@ -22,7 +22,7 @@ resource "azurerm_resource_group" "jktfrg" {
 }
 
 resource "azurerm_virtual_network" "jktfvm" {
-  name                = "jknetwork"
+  name                = "VnetVm"
   address_space       = ["10.0.0.0/16"]
   location            = azurerm_resource_group.jktfrg.location
   resource_group_name = azurerm_resource_group.jktfrg.name
@@ -36,7 +36,7 @@ resource "azurerm_subnet" "jktfsub" {
 }
 
 resource "azurerm_network_interface" "jktfnic" {
-  name                = "example-nic"
+  name                = "nicVm"
   location            = azurerm_resource_group.jktfrg.location
   resource_group_name = azurerm_resource_group.jktfrg.name
 
@@ -48,7 +48,7 @@ resource "azurerm_network_interface" "jktfnic" {
 }
 
 resource "azurerm_linux_virtual_machine" "jktfvm" {
-  name                = "Vmjktf"
+  name                = "Ubuntu20VM"
   resource_group_name = azurerm_resource_group.jktfrg.name
   location            = azurerm_resource_group.jktfrg.location
   size                = "Standard_DS1_v2"
